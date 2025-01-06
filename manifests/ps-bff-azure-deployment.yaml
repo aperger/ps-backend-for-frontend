@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ps-bff-deployment
+  labels:
+    app: ps-bff
+    type: api
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ps-bff
+      type: api
+  template:
+    metadata:
+      name: ps-bff-pod
+      labels:
+        app: ps-bff
+        type: api
+    spec:
+      containers:
+        - name: ps-bff
+          image: acrpegersoft.azurecr.io/ps-backend-for-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+# ?? SECRETS ???

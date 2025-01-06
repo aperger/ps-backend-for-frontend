@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ps-bff-deployment
+  labels:
+    app: ps-bff
+    type: backend
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ps-bff
+      type: backend
+  template:
+    metadata:
+      name: ps-bff-pod
+      labels:
+        app: ps-bff
+        type: backend
+    spec:
+      containers:
+        - name: ps-bff
+          image: ps-backend-for-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AZURE_TENANT_ID
+                  name: ps-bff-secrets
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AZURE_CLIENT_ID
+                  name: ps-bff-secrets
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: AZURE_CLIENT_SECRET
+                  name: ps-bff-secrets
+            - name: OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: OAUTH_CLIENT_ID
+                  name: ps-bff-secrets
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: OAUTH_CLIENT_SECRET
+                  name: ps-bff-secrets
